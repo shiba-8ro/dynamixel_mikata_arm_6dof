@@ -35,17 +35,17 @@
   <!-- Link 1 -->
   <link name="link1">
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 ${-pi*0.5}"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link1.stl"/>
       </geometry>
       <material name="grey"/>
     </visual>
 
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 ${-pi*0.5}"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link1.stl"/>
       </geometry>
     </collision>
 
@@ -70,9 +70,9 @@
   <joint name="joint1" type="revolute">
     <parent link="link1"/>
     <child link="link2"/>
-    <origin xyz="0.012 0.0 0.017" rpy="0 0 0"/>
+    <origin xyz="0 0 0.0355" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
-    <limit velocity="4.8" effort="1" lower="${-pi*0.9}" upper="${pi*0.9}" />
+    <limit velocity="4.8" effort="1" lower="${-pi}" upper="${pi}" />
   </joint>
 
   <!-- Transmission 1 -->
@@ -81,17 +81,17 @@
   <!--  Link 2 -->
   <link name="link2">
     <visual>
-      <origin xyz="0 0 0.019" rpy="0 0 0"/>
+      <origin xyz="0 0 0.0405" rpy="${pi*0.5} 0 ${pi*0.5}"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link2.stl"/>
       </geometry>
       <material name="grey"/>
     </visual>
 
     <collision>
-      <origin xyz="0 0 0.019" rpy="0 0 0"/>
+      <origin xyz="0 0 0.0405" rpy="${pi*0.5} 0 ${pi*0.5}"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link2.stl"/>
       </geometry>
     </collision>
 
@@ -116,9 +116,9 @@
   <joint name="joint2" type="revolute">
     <parent link="link2"/>
     <child link="link3"/>
-    <origin xyz="0.0 0.0 0.0595" rpy="0 0 0"/>
+    <origin xyz="0 0 0.0405" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit velocity="4.8" effort="1" lower="${-pi*0.57}" upper="${pi*0.5}" />
+    <limit velocity="4.8" effort="1" lower="-1.85" upper="2.07" />
   </joint>
 
   <!-- Transmission 2 -->
@@ -127,17 +127,17 @@
   <!--  Link 3 -->
   <link name="link3">
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0.024 0 0.148" rpy="0 0 ${-pi*0.5}"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link3.stl"/>
       </geometry>
       <material name="grey"/>
     </visual>
 
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0.024 0 0.148" rpy="0 0 ${-pi*0.5}"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link3.stl"/>
       </geometry>
     </collision>
 
@@ -162,9 +162,9 @@
   <joint name="joint3" type="revolute">
     <parent link="link3"/>
     <child link="link4"/>
-    <origin xyz="0.024 0 0.128" rpy="0 0 0"/>
+    <origin xyz="0.024 0 0.148" rpy=" 0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit velocity="4.8" effort="1" lower="${-pi*0.3}" upper="${pi*0.44}" />
+    <limit velocity="4.8" effort="1" lower="-1.85" upper="1.41" />
   </joint>
 
   <!-- Transmission 3 -->
@@ -173,17 +173,17 @@
   <!--  Link 4 -->
   <link name="link4">
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0.150 0 0" rpy="0 ${pi} ${-pi*0.5}"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link4.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link4.stl"/>
       </geometry>
       <material name="grey"/>
     </visual>
 
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0.150 0 0" rpy="0 ${pi} ${-pi*0.5}"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link4.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link4.stl"/>
       </geometry>
     </collision>
 
@@ -208,9 +208,9 @@
   <joint name="joint4" type="revolute">
     <parent link="link4"/>
     <child link="link5"/>
-    <origin xyz="0.124 0.0 0.0" rpy="0 0 0"/>
+    <origin xyz="0.150 0 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit velocity="4.8" effort="1" lower="${-pi*0.57}" upper="${pi*0.65}" />
+    <limit velocity="4.8" effort="1" lower="-1.64" upper="1.78" />
   </joint>
 
   <!-- Transmission 4 -->
@@ -221,7 +221,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link5.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link5.stl"/>
       </geometry>
       <material name="grey"/>
     </visual>
@@ -229,7 +229,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link5.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link5.stl"/>
       </geometry>
     </collision>
 
@@ -253,17 +253,17 @@
   <!--  Gripper link -->
   <link name="gripper_link">
     <visual>
-      <origin xyz="0.0 0.0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link_grip_l.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link_grip_l.stl"/>
       </geometry>
       <material name="grey"/>
     </visual>
 
     <collision>
-      <origin xyz="0.0 0.0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link_grip_l.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link_grip_l.stl"/>
       </geometry>
     </collision>
 
@@ -284,13 +284,13 @@
     </inertial>-->
   </link>
 
-  <!--  Gripper joint -->
-  <joint name="gripper" type="prismatic">
+  <!--  Grip joint -->
+  <joint name="grip_joint" type="revolute">
     <parent link="link5"/>
-    <child link="gripper_link"/>
-    <origin xyz="0.0817 0.021 0.0" rpy="0 0 0"/>
-    <axis xyz="0 1 0"/>
-    <limit velocity="4.8" effort="1" lower="-0.010" upper="0.019" />
+    <child link="grip_link"/>
+    <origin xyz="0.04225 0.015 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit velocity="4.8" effort="1" lower="-0.7133010663668231" upper="1.059980724428978" />
   </joint>
 
   <!-- Transmission 5 -->
@@ -299,17 +299,17 @@
   <!--  Gripper link sub -->
   <link name="gripper_link_sub">
     <visual>
-      <origin xyz="0.0 -0.0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link_grip_r.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link_grip_r.stl"/>
       </geometry>
       <material name="grey"/>
     </visual>
 
     <collision>
-      <origin xyz="0.0 -0.0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link_grip_r.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/chain_link_grip_r.stl"/>
       </geometry>
     </collision>
 
@@ -330,14 +330,14 @@
     </inertial>-->
   </link>
 
-  <!--  Gripper joint sub -->
-  <joint name="gripper_sub" type="prismatic">
+  <!--  Grip joint sub -->
+  <joint name="grip_joint_sub" type="revolute">
     <parent link="link5"/>
-    <child link="gripper_link_sub"/>
-    <origin xyz="0.0817 -0.021 0" rpy="0 0 0"/>
-    <axis xyz="0 -1 0"/>
-    <limit velocity="4.8" effort="1" lower="-0.010" upper="0.019" />
-    <mimic joint="gripper" multiplier="1"/>
+    <child link="grip_link_sub"/>
+    <origin xyz="0.04225 -0.015 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit velocity="4.8" effort="1" lower="-0.7133010663668231" upper="1.059980724428978" />
+    <mimic joint="grip_joint" multiplier="-1"/>
   </joint>
 
   <!-- Transmission 6 -->
