@@ -317,14 +317,14 @@ void OpenManipulatorTeleop::setGoal(char ch)
     printf("input : g \topen gripper\n");
     std::vector<double> joint_angle;
 
-    joint_angle.push_back(0.01);
+    joint_angle.push_back(0.7);
     setToolControl(joint_angle);
   }
   else if(ch == 'f' || ch == 'F')
   {
     printf("input : f \tclose gripper\n");
     std::vector<double> joint_angle;
-    joint_angle.push_back(-0.01);
+    joint_angle.push_back(-0.7);
     setToolControl(joint_angle);
   }
 
@@ -336,9 +336,9 @@ void OpenManipulatorTeleop::setGoal(char ch)
     double path_time = 2.0;
 
     joint_name.push_back("joint1"); joint_angle.push_back(0.0);
-    joint_name.push_back("joint2"); joint_angle.push_back(-1.05);
-    joint_name.push_back("joint3"); joint_angle.push_back(0.35);
-    joint_name.push_back("joint4"); joint_angle.push_back(0.70);
+    joint_name.push_back("joint2"); joint_angle.push_back(-1.18);
+    joint_name.push_back("joint3"); joint_angle.push_back(0.620);
+    joint_name.push_back("joint4"); joint_angle.push_back(0.568);
     setJointSpacePath(joint_name, joint_angle, path_time);
   }
   else if(ch == '1')
