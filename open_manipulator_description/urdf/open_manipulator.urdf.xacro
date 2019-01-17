@@ -284,10 +284,10 @@
     </inertial>-->
   </link>
 
-  <!--  Grip joint -->
-  <joint name="grip_joint" type="revolute">
+  <!--  Gripper joint -->
+  <joint name="gripper" type="revolute">
     <parent link="link5"/>
-    <child link="grip_link"/>
+    <child link="gripper_link"/>
     <origin xyz="0.04225 0.015 0" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit velocity="4.8" effort="1" lower="-0.7133010663668231" upper="1.059980724428978" />
@@ -330,14 +330,14 @@
     </inertial>-->
   </link>
 
-  <!--  Grip joint sub -->
-  <joint name="grip_joint_sub" type="revolute">
+  <!--  Gripper joint sub -->
+  <joint name="gripper_sub" type="revolute">
     <parent link="link5"/>
-    <child link="grip_link_sub"/>
+    <child link="gripper_link_sub"/>
     <origin xyz="0.04225 -0.015 0" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit velocity="4.8" effort="1" lower="-0.7133010663668231" upper="1.059980724428978" />
-    <mimic joint="grip_joint" multiplier="-1"/>
+    <mimic joint="gripper" multiplier="-1"/>
   </joint>
 
   <!-- Transmission 6 -->
