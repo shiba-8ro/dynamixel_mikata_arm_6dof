@@ -35,7 +35,7 @@
   <!-- Link 1 -->
   <link name="link1">
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 ${-pi*0.5}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <mesh filename="package://open_manipulator_description/meshes/chain_link1.stl"/>
       </geometry>

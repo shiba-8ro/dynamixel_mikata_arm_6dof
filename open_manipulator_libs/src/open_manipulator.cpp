@@ -84,7 +84,7 @@ void OpenManipulator::initOpenManipulator(bool using_actual_robot_state, STRING 
           15,     // actuator id
           1.06,   // max gripper limit
           -0.72, // min gripper limit
-          -1.0); // Coefficient
+          1.0);  // Coefficient
 
 
   /*****************************************************************************
