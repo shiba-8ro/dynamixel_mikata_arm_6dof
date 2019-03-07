@@ -26,7 +26,6 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <std_msgs/Float64.h>
 #include <std_msgs/String.h>
-#include <std_msgs/Empty.h>
 #include <boost/thread.hpp>
 #include <unistd.h>
 
@@ -38,9 +37,6 @@
 #include <moveit/robot_model/robot_model.h>
 #include <moveit/robot_state/robot_state.h>
 
-#include <moveit_msgs/DisplayTrajectory.h>
-#include <moveit_msgs/ExecuteTrajectoryActionGoal.h>
-#include <moveit_msgs/MoveGroupActionGoal.h>
 #include <trajectory_msgs/JointTrajectory.h>
 #include <trajectory_msgs/JointTrajectoryPoint.h>
 
@@ -48,8 +44,6 @@
 #include "open_manipulator_msgs/SetKinematicsPose.h"
 #include "open_manipulator_msgs/SetDrawingTrajectory.h"
 #include "open_manipulator_msgs/SetActuatorState.h"
-#include "open_manipulator_msgs/GetJointPosition.h"
-#include "open_manipulator_msgs/GetKinematicsPose.h"
 #include "open_manipulator_msgs/OpenManipulatorState.h"
 
 #include "open_manipulator_libs/open_manipulator.h"
@@ -74,13 +68,9 @@ class OpenManipulatorController
   std::vector<ros::Publisher> open_manipulator_kinematics_pose_pub_;
   ros::Publisher open_manipulator_joint_states_pub_;
   std::vector<ros::Publisher> gazebo_goal_joint_position_pub_;
-  ros::Publisher moveit_update_start_state_pub_;
 
   // ROS Subscribers
   ros::Subscriber open_manipulator_option_sub_;
-  ros::Subscriber display_planned_path_sub_;
-  ros::Subscriber move_group_goal_sub_;
-  ros::Subscriber execute_traj_goal_sub_;
 
   // ROS Action Server
   actionlib::SimpleActionServer<control_msgs::FollowJointTrajectoryAction> follow_joint_trajectory_server_;
@@ -102,10 +92,6 @@ class OpenManipulatorController
   ros::ServiceServer goal_tool_control_server_;
   ros::ServiceServer set_actuator_state_server_;
   ros::ServiceServer goal_drawing_trajectory_server_;
-  ros::ServiceServer get_joint_position_server_;
-  ros::ServiceServer get_kinematics_pose_server_;
-  ros::ServiceServer set_joint_position_server_;
-  ros::ServiceServer set_kinematics_pose_server_;
 
   // MoveIt! interface
   moveit::planning_interface::MoveGroupInterface* move_group_;
@@ -138,9 +124,6 @@ class OpenManipulatorController
   void initServer();
 
   void openManipulatorOptionCallback(const std_msgs::String::ConstPtr &msg);
-  void displayPlannedPathCallback(const moveit_msgs::DisplayTrajectory::ConstPtr &msg);
-  void moveGroupGoalCallback(const moveit_msgs::MoveGroupActionGoal::ConstPtr &msg);
-  void executeTrajGoalCallback(const moveit_msgs::ExecuteTrajectoryActionGoal::ConstPtr &msg);
 
   double getControlPeriod(void){return control_period_;}
 
@@ -187,18 +170,6 @@ class OpenManipulatorController
 
   bool goalDrawingTrajectoryCallback(open_manipulator_msgs::SetDrawingTrajectory::Request  &req,
                                      open_manipulator_msgs::SetDrawingTrajectory::Response &res);
-
-  bool setJointPositionMsgCallback(open_manipulator_msgs::SetJointPosition::Request &req,
-                                   open_manipulator_msgs::SetJointPosition::Response &res);
-
-  bool setKinematicsPoseMsgCallback(open_manipulator_msgs::SetKinematicsPose::Request &req,
-                                    open_manipulator_msgs::SetKinematicsPose::Response &res);
-
-  bool getJointPositionMsgCallback(open_manipulator_msgs::GetJointPosition::Request &req,
-                                   open_manipulator_msgs::GetJointPosition::Response &res);
-
-  bool getKinematicsPoseMsgCallback(open_manipulator_msgs::GetKinematicsPose::Request &req,
-                                    open_manipulator_msgs::GetKinematicsPose::Response &res);
 
   void startTimerThread();
   static void *timerThread(void *param);
