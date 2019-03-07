@@ -30,7 +30,10 @@ OpenManipulatorController::OpenManipulatorController(std::string usb_port, std::
      using_moveit_(false),
      moveit_plan_only_(true),
      control_period_(0.010f),
-     moveit_sampling_time_(0.050f)
+     moveit_sampling_time_(0.050f),
+     follow_joint_trajectory_server_(priv_node_handle_, "arm_controller/follow_joint_trajectory",
+                                     boost::bind(&OpenManipulatorController::goalFollowJointTrajectoryCallback, this, _1),
+                                     false)
 {
   control_period_       = priv_node_handle_.param<double>("control_period", 0.010f);
   moveit_sampling_time_ = priv_node_handle_.param<double>("moveit_sample_duration", 0.050f);
@@ -180,6 +183,8 @@ void OpenManipulatorController::initSubscriber()
 
 void OpenManipulatorController::initServer()
 {
+  follow_joint_trajectory_server_.start();
+
   goal_joint_space_path_server_                     = priv_node_handle_.advertiseService("goal_joint_space_path", &OpenManipulatorController::goalJointSpacePathCallback, this);
   goal_joint_space_path_to_kinematics_pose_server_  = priv_node_handle_.advertiseService("goal_joint_space_path_to_kinematics_pose", &OpenManipulatorController::goalJointSpacePathToKinematicsPoseCallback, this);
   goal_joint_space_path_to_kinematics_position_server_  = priv_node_handle_.advertiseService("goal_joint_space_path_to_kinematics_position", &OpenManipulatorController::goalJointSpacePathToKinematicsPositionCallback, this);
@@ -239,6 +244,29 @@ void OpenManipulatorController::executeTrajGoalCallback(const moveit_msgs::Execu
   log::println("[INFO] [OpenManipulator Controller] Execute Moveit planned path", "GREEN");
   moveit_plan_state_ = true;
 }
+
+void OpenManipulatorController::goalFollowJointTrajectoryCallback(const control_msgs::FollowJointTrajectoryGoalConstPtr &goal)
+  {
+    ROS_DEBUG("goalFollowJointTrajectoryCallback");
+
+    joint_trajectory_ = goal->trajectory;
+    moveit_plan_state_ = true;
+    follow_joint_trajectory_feedback_ = control_msgs::FollowJointTrajectoryFeedback();
+    follow_joint_trajectory_feedback_.joint_names = goal->trajectory.joint_names;
+
+    ros::Rate loop_rate(100);
+    while(follow_joint_trajectory_server_.isActive() && ros::ok())
+    {
+      if(follow_joint_trajectory_server_.isPreemptRequested())
+      {
+        ROS_ERROR("Trajectory Execution Interrupted!");
+        follow_joint_trajectory_server_.setPreempted();
+        moveit_plan_state_ = false;
+        return;
+      }
+      loop_rate.sleep();
+    }
+  }
 
 bool OpenManipulatorController::goalJointSpacePathCallback(open_manipulator_msgs::SetJointPosition::Request  &req,
                                                            open_manipulator_msgs::SetJointPosition::Response &res)
@@ -755,48 +783,89 @@ void OpenManipulatorController::publishCallback(const ros::TimerEvent&)
   publishKinematicsPose();
 }
 
+void OpenManipulatorController::moveitPublishGoal(uint32_t step_cnt, double* time_from_start)
+{
+  JointWaypoint target;
+
+  for(uint8_t i = 0; i < joint_trajectory_.points[step_cnt].positions.size(); i++)
+  {
+    JointValue temp;
+    temp.position = joint_trajectory_.points[step_cnt].positions.at(i);
+    temp.velocity = joint_trajectory_.points[step_cnt].velocities.at(i);
+    temp.acceleration = joint_trajectory_.points[step_cnt].accelerations.at(i);
+    // temp.effort = joint_trajectory_.points[step_cnt].effort.at(i);
+    target.push_back(temp);
+  }
+  follow_joint_trajectory_feedback_.desired = joint_trajectory_.points[step_cnt];
+  double req_time = joint_trajectory_.points[step_cnt].time_from_start.toSec();
+  double path_time = req_time - *time_from_start;
+
+  if (path_time > 0.0f)
+    open_manipulator_.makeJointTrajectory(target, path_time);
+
+  *time_from_start = req_time;
+}
+
+void OpenManipulatorController::moveitPublishFeedback()
+{
+  auto joint_value = open_manipulator_.getAllActiveJointValue();
+  trajectory_msgs::JointTrajectoryPoint actual;
+  trajectory_msgs::JointTrajectoryPoint error;
+
+  for(uint8_t i = 0; i < follow_joint_trajectory_feedback_.joint_names.size(); i ++)
+  {
+    actual.positions.push_back(joint_value.at(i).position);
+    actual.velocities.push_back(joint_value.at(i).velocity);
+    actual.effort.push_back(joint_value.at(i).effort);
+    actual.accelerations.push_back(joint_value.at(i).acceleration);
+
+    error.positions.push_back(follow_joint_trajectory_feedback_.desired.positions.at(i) -
+                                 joint_value.at(i).position);
+    error.velocities.push_back(follow_joint_trajectory_feedback_.desired.velocities.at(i) -
+                                 joint_value.at(i).velocity);
+    error.accelerations.push_back(follow_joint_trajectory_feedback_.desired.accelerations.at(i) -
+                                 joint_value.at(i).acceleration);
+    // error.effort.push_back(follow_joint_trajectory_feedback_.desired.effort.at(i) -
+    //                              joint_value.at(i).effort);
+  }
+  follow_joint_trajectory_feedback_.actual = actual;
+  follow_joint_trajectory_feedback_.error = error;
+
+  follow_joint_trajectory_server_.publishFeedback(follow_joint_trajectory_feedback_);
+}
+
+
 void OpenManipulatorController::moveitTimer(double present_time)
 {
-  static double priv_time = 0.0f;
+  static double start_time = 0.0f;
+  static double time_from_start = 0.0f;
   static uint32_t step_cnt = 0;
 
   if (moveit_plan_state_ == true)
   {
-    double path_time = present_time - priv_time;
-    if (path_time > moveit_sampling_time_)
+    if (present_time > start_time + time_from_start)
     {
-      JointWaypoint target;
       uint32_t all_time_steps = joint_trajectory_.points.size();
-
-      for(uint8_t i = 0; i < joint_trajectory_.points[step_cnt].positions.size(); i++)
-      {
-        JointValue temp;
-        temp.position = joint_trajectory_.points[step_cnt].positions.at(i);
-        temp.velocity = joint_trajectory_.points[step_cnt].velocities.at(i);
-        temp.acceleration = joint_trajectory_.points[step_cnt].accelerations.at(i);
-        target.push_back(temp);
-      }
-      open_manipulator_.makeJointTrajectory(target, path_time);
-
-      step_cnt++;
-      priv_time = present_time;
-
       if (step_cnt >= all_time_steps)
       {
-        step_cnt = 0;
+        if(follow_joint_trajectory_server_.isActive())
+          follow_joint_trajectory_server_.setSucceeded(follow_joint_trajectory_result_);
         moveit_plan_state_ = false;
-        if (moveit_update_start_state_pub_.getNumSubscribers() == 0)
-        {
-          log::warn("Could not update the start state! Enable External Communications at the Moveit Plugin");
-        }
-        std_msgs::Empty msg;
-        moveit_update_start_state_pub_.publish(msg);
+        ROS_DEBUG("Finished Trajectory Execution!");
+      }
+      else
+      {
+        moveitPublishGoal(step_cnt, &time_from_start);
+        step_cnt++;
       }
     }
+    moveitPublishFeedback();
   }
   else
   {
-    priv_time = present_time;
+    start_time = present_time;
+    time_from_start = 0.0f;
+    step_cnt = 0;
   }
 }
 

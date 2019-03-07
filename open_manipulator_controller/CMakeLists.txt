@@ -11,7 +11,9 @@ add_compile_options(-std=c++11)
 ################################################################################
 find_package(catkin REQUIRED COMPONENTS
     roscpp
+    actionlib
     std_msgs
+    control_msgs
     sensor_msgs
     geometry_msgs
     moveit_msgs
@@ -43,7 +45,7 @@ find_package(Boost REQUIRED)
 ################################################################################
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS roscpp std_msgs sensor_msgs geometry_msgs moveit_msgs trajectory_msgs open_manipulator_msgs robotis_manipulator open_manipulator_libs moveit_core moveit_ros_planning  moveit_ros_planning_interface cmake_modules
+  CATKIN_DEPENDS roscpp actionlib std_msgs control_msgs sensor_msgs geometry_msgs moveit_msgs trajectory_msgs open_manipulator_msgs robotis_manipulator open_manipulator_libs moveit_core moveit_ros_planning  moveit_ros_planning_interface cmake_modules
   DEPENDS Boost
 )
 

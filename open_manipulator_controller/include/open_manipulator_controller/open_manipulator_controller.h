@@ -20,6 +20,8 @@
 #define OPEN_MANIPULATOR_CONTROLLER_H
 
 #include <ros/ros.h>
+#include <actionlib/server/simple_action_server.h>
+#include <control_msgs/FollowJointTrajectoryAction.h>
 #include <sensor_msgs/JointState.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <std_msgs/Float64.h>
@@ -80,6 +82,11 @@ class OpenManipulatorController
   ros::Subscriber move_group_goal_sub_;
   ros::Subscriber execute_traj_goal_sub_;
 
+  // ROS Action Server
+  actionlib::SimpleActionServer<control_msgs::FollowJointTrajectoryAction> follow_joint_trajectory_server_;
+  control_msgs::FollowJointTrajectoryFeedback follow_joint_trajectory_feedback_;
+  control_msgs::FollowJointTrajectoryResult follow_joint_trajectory_result_;
+
   // ROS Service Server
   ros::ServiceServer goal_joint_space_path_server_;
   ros::ServiceServer goal_joint_space_path_to_kinematics_pose_server_;
@@ -136,6 +143,8 @@ class OpenManipulatorController
   void executeTrajGoalCallback(const moveit_msgs::ExecuteTrajectoryActionGoal::ConstPtr &msg);
 
   double getControlPeriod(void){return control_period_;}
+
+  void goalFollowJointTrajectoryCallback(const control_msgs::FollowJointTrajectoryGoalConstPtr &goal);
 
   bool goalJointSpacePathCallback(open_manipulator_msgs::SetJointPosition::Request  &req,
                                   open_manipulator_msgs::SetJointPosition::Response &res);
@@ -194,6 +203,8 @@ class OpenManipulatorController
   void startTimerThread();
   static void *timerThread(void *param);
 
+  void moveitPublishGoal(uint32_t step_cnt, double* time_from_start);
+  void moveitPublishFeedback();
   void moveitTimer(double present_time);
   void process(double time);
 
