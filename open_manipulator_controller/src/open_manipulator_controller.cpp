@@ -23,19 +23,15 @@ using namespace open_manipulator_controller;
 OpenManipulatorController::OpenManipulatorController(std::string usb_port, std::string baud_rate)
     :node_handle_(""),
      priv_node_handle_("~"),
-     tool_ctrl_state_(false),
      timer_thread_state_(false),
      moveit_plan_state_(false),
      using_platform_(false),
-     moveit_plan_only_(true),
      control_period_(0.010f),
-     moveit_sampling_time_(0.050f),
      follow_joint_trajectory_server_(priv_node_handle_, "arm_controller/follow_joint_trajectory",
                                      boost::bind(&OpenManipulatorController::goalFollowJointTrajectoryCallback, this, _1),
                                      false)
 {
   control_period_       = priv_node_handle_.param<double>("control_period", 0.010f);
-  moveit_sampling_time_ = priv_node_handle_.param<double>("moveit_sample_duration", 0.050f);
   using_platform_       = priv_node_handle_.param<bool>("using_platform", false);
   std::string planning_group_name = priv_node_handle_.param<std::string>("planning_group_name", "arm");
 

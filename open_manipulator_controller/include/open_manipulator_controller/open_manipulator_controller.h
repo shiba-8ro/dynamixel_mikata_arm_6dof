@@ -96,8 +96,6 @@ class OpenManipulatorController
   // MoveIt! interface
   moveit::planning_interface::MoveGroupInterface* move_group_;
   trajectory_msgs::JointTrajectory joint_trajectory_;
-  double moveit_sampling_time_;
-  bool moveit_plan_only_;
 
   // Thread parameter
   pthread_t timer_thread_;
@@ -107,7 +105,6 @@ class OpenManipulatorController
   OpenManipulator open_manipulator_;
 
   // flag parameter
-  bool tool_ctrl_state_;
   bool timer_thread_state_;
   bool moveit_plan_state_;
 

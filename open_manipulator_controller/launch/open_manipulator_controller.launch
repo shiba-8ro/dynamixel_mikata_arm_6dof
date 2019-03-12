@@ -30,7 +30,6 @@
       <param name="using_platform"       value="$(eval use_platform and not use_gazebo)"/>
       <param name="planning_group_name"  value="$(arg planning_group_name)"/>
       <param name="control_period"       value="$(arg control_period)"/>
-      <param name="moveit_sample_duration"  value="$(arg moveit_sample_duration)"/>
   </node>
 
 </launch>
