@@ -40,8 +40,8 @@ void OpenManipulator::initOpenManipulator(bool using_actual_robot_state, STRING 
   addJoint("joint1", // my name
            "world",  // parent name
            "joint2", // child name
-           math::vector3(0.0, 0.0, 0.0355), // relative position
-           math::convertRPYToRotationMatrix(0.0, 0.0, 0.0), // relative orientation
+           math::vector3(0.0, 0.0, 0.0515), // relative position
+           math::convertRPYToRotationMatrix(0.0, 0.0, -M_PI/2.0), // relative orientation
            Z_AXIS, // axis of rotation
            11,     // actuator id
            M_PI,   // max joint limit (3.14 rad)
@@ -50,38 +50,58 @@ void OpenManipulator::initOpenManipulator(bool using_actual_robot_state, STRING 
   addJoint("joint2", // my name
            "joint1", // parent name
            "joint3", // child name
-           math::vector3(0.0, 0.0, 0.0405), // relative position
-           math::convertRPYToRotationMatrix(0.0, 0.0, 0.0), // relative orientation
-           Y_AXIS, // axis of rotation
+           math::vector3(0.026, 0.0, 0.05475), // relative position
+           math::convertRPYToRotationMatrix(M_PI/2.0, 0.0, M_PI/2.0), // relative orientation
+           Z_AXIS, // axis of rotation
            12,     // actuator id
-           2.07,   // max joint limit
-           -1.85); // min joint limit
+           M_PI,   // max joint limit (3.14 rad)
+           -M_PI); // min joint limit (-3.14 rad)
 
   addJoint("joint3", // my name
            "joint2", // parent name
            "joint4", // child name
-           math::vector3(0.024, 0.0, 0.148), // relative position
-           math::convertRPYToRotationMatrix(0.0, 0.0, 0.0), // relative orientation
-           Y_AXIS, // axis of rotation
+           math::vector3(0.024, 0.1684, -0.045), // relative position
+           math::convertRPYToRotationMatrix(0.0, 0.0, M_PI/2.0), // relative orientation
+           Z_AXIS, // axis of rotation
            13,     // actuator id
-           1.41,   // max joint limit
-           -1.85); // min joint limit
+           M_PI,   // max joint limit (3.14 rad)
+           -M_PI); // min joint limit (-3.14 rad)
 
   addJoint("joint4", // my name
            "joint3", // parent name
-           "gripper",   // child name
-           math::vector3(0.150, 0.0, 0.0), // relative position
-           math::convertRPYToRotationMatrix(0.0, 0.0, 0.0), // relative orientation
-           Y_AXIS, // axis of rotation
+           "joint5",   // child name
+           math::vector3(0.0, -0.062, 0.019), // relative position
+           math::convertRPYToRotationMatrix(M_PI/2.0, -M_PI/2.0, 0.0), // relative orientation
+           Z_AXIS, // axis of rotation
            14,     // actuator id
-           1.78,   // max joint limit
-           -1.64); // min joint limit
+           M_PI,   // max joint limit (3.14 rad)
+           -M_PI); // min joint limit (-3.14 rad)
+
+  addJoint("joint5", // my name
+           "joint4", // parent name
+           "joint6",   // child name
+           math::vector3(0.019, 0.0, 0.088), // relative position
+           math::convertRPYToRotationMatrix(M_PI/2.0, 0.0, M_PI/2.0), // relative orientation
+           Z_AXIS, // axis of rotation
+           15,     // actuator id
+           M_PI,   // max joint limit (3.14 rad)
+           -M_PI); // min joint limit (-3.14 rad)
+
+  addJoint("joint6", // my name
+           "joint5", // parent name
+           "gripper",   // child name
+           math::vector3(0.0, 0.062, -0.019), // relative position
+           math::convertRPYToRotationMatrix(-M_PI/2.0, 0.0, M_PI), // relative orientation
+           Z_AXIS, // axis of rotation
+           16,     // actuator id
+           M_PI,   // max joint limit (3.14 rad)
+           -M_PI); // min joint limit (-3.14 rad)
 
   addTool("gripper",   // my name
-          "joint4", // parent name
-          math::vector3(0.10, 0.0, 0.0), // relative position
-          math::convertRPYToRotationMatrix(0.0, 0.0, 0.0), // relative orientation
-          15,     // actuator id
+          "joint6", // parent name
+          math::vector3(0.027, -0.016, -0.026), // relative position
+          math::convertRPYToRotationMatrix(-M_PI/2.0, M_PI/4.0, -M_PI/2.0), // relative orientation
+          17,     // actuator id
           1.06,   // max gripper limit
           -0.72, // min gripper limit
           -1.0);  // Coefficient
@@ -112,6 +132,8 @@ void OpenManipulator::initOpenManipulator(bool using_actual_robot_state, STRING 
     jointDxlId.push_back(12);
     jointDxlId.push_back(13);
     jointDxlId.push_back(14);
+    jointDxlId.push_back(15);
+    jointDxlId.push_back(16);
     addJointActuator(JOINT_DYNAMIXEL, actuator_, jointDxlId, p_dxl_comm_arg);
 
     // Set joint actuator control mode
@@ -125,7 +147,7 @@ void OpenManipulator::initOpenManipulator(bool using_actual_robot_state, STRING 
     *****************************************************************************/
     tool_ = new dynamixel::GripperDynamixel();
 
-    uint8_t gripperDxlId = 15;
+    uint8_t gripperDxlId = 17;
     addToolActuator(TOOL_DYNAMIXEL, tool_, gripperDxlId, p_dxl_comm_arg);
 
     // Set gripper actuator control mode

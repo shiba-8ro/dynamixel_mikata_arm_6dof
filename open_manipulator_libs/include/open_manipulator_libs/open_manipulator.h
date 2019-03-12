@@ -23,7 +23,7 @@
 #include "custom_trajectory.h"
 #include "kinematics.h"
 
-#define CUSTOM_TRAJECTORY_SIZE 4
+#define CUSTOM_TRAJECTORY_SIZE 6
 #define CUSTOM_TRAJECTORY_LINE    "custom_trajectory_line"
 #define CUSTOM_TRAJECTORY_CIRCLE  "custom_trajectory_circle"
 #define CUSTOM_TRAJECTORY_RHOMBUS "custom_trajectory_rhombus"
