@@ -192,6 +192,25 @@ void OpenManipulatorController::goalFollowJointTrajectoryCallback(const control_
   {
     ROS_DEBUG("goalFollowJointTrajectoryCallback");
 
+    // Check joint_names
+    if(goal->trajectory.joint_names.size() != follow_joint_trajectory_feedback_.joint_names.size())
+    {
+      log::error("Sizes mismatch at goalFollowJointTrajectoryCallback!");
+      ROS_ERROR("Aborting Trajectory Execution!");
+      follow_joint_trajectory_server_.setAborted();
+      return;
+    }
+    for(uint8_t i = 0; i < goal->trajectory.joint_names.size(); i ++)
+    {
+      if(goal->trajectory.joint_names.at(i) != follow_joint_trajectory_feedback_.joint_names.at(i))
+      {
+        log::error("Joint names mismatch at goalFollowJointTrajectoryCallback!");
+        ROS_ERROR("Aborting Trajectory Execution!");
+        follow_joint_trajectory_server_.setAborted();
+        return;
+      }
+    }
+
     joint_trajectory_ = goal->trajectory;
     moveit_plan_state_ = true;
 
@@ -629,11 +648,15 @@ void OpenManipulatorController::moveitPublishGoal(uint32_t step_cnt, double* tim
   {
     JointValue temp;
     temp.position = joint_trajectory_.points[step_cnt].positions.at(i);
-    temp.velocity = joint_trajectory_.points[step_cnt].velocities.at(i);
-    temp.acceleration = joint_trajectory_.points[step_cnt].accelerations.at(i);
-    // temp.effort = joint_trajectory_.points[step_cnt].effort.at(i);
-    target.push_back(temp);
+    if(joint_trajectory_.points[step_cnt].velocities.size())
+      temp.velocity = joint_trajectory_.points[step_cnt].velocities.at(i);
+    if(joint_trajectory_.points[step_cnt].accelerations.size())
+      temp.acceleration = joint_trajectory_.points[step_cnt].accelerations.at(i);
+    // if(joint_trajectory_.points[step_cnt].effort.size())
+    //   temp.effort = joint_trajectory_.points[step_cnt].effort.at(i);
+  target.push_back(temp);
   }
+
   follow_joint_trajectory_feedback_.desired = joint_trajectory_.points[step_cnt];
   double req_time = joint_trajectory_.points[step_cnt].time_from_start.toSec();
   double path_time = req_time - *time_from_start;
