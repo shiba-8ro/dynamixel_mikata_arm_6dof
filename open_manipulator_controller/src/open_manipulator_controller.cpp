@@ -136,6 +136,7 @@ void OpenManipulatorController::initPublisher()
   if(using_platform_ == true)
   {
     open_manipulator_joint_states_pub_ = priv_node_handle_.advertise<sensor_msgs::JointState>("joint_states", 10);
+    open_manipulator_controller_state_pub_ = priv_node_handle_.advertise<control_msgs::JointTrajectoryControllerState>("arm_controller/state", 10);
   }
   else
   {
@@ -193,8 +194,6 @@ void OpenManipulatorController::goalFollowJointTrajectoryCallback(const control_
 
     joint_trajectory_ = goal->trajectory;
     moveit_plan_state_ = true;
-    follow_joint_trajectory_feedback_ = control_msgs::FollowJointTrajectoryFeedback();
-    follow_joint_trajectory_feedback_.joint_names = goal->trajectory.joint_names;
 
     ros::Rate loop_rate(100);
     while(follow_joint_trajectory_server_.isActive() && ros::ok())
@@ -520,10 +519,13 @@ void OpenManipulatorController::publishKinematicsPose()
   }
 }
 
-void OpenManipulatorController::publishJointStates()
+void OpenManipulatorController::publishStates()
 {
-  sensor_msgs::JointState msg;
-  msg.header.stamp = ros::Time::now();
+  sensor_msgs::JointState joint_state_msg;
+  control_msgs::JointTrajectoryControllerState controller_state_msg;
+  trajectory_msgs::JointTrajectoryPoint actual;
+  trajectory_msgs::JointTrajectoryPoint error;
+  ros::Time stamp = ros::Time::now();
 
   auto joints_name = open_manipulator_.getManipulator()->getAllActiveJointComponentName();
   auto tool_name = open_manipulator_.getManipulator()->getAllToolComponentName();
@@ -531,24 +533,61 @@ void OpenManipulatorController::publishJointStates()
   auto joint_value = open_manipulator_.getAllActiveJointValue();
   auto tool_value = open_manipulator_.getAllToolValue();
 
+  // Update joint values
   for(uint8_t i = 0; i < joints_name.size(); i ++)
   {
-    msg.name.push_back(joints_name.at(i));
+    joint_state_msg.name.push_back(joints_name.at(i));
 
-    msg.position.push_back(joint_value.at(i).position);
-    msg.velocity.push_back(joint_value.at(i).velocity);
-    msg.effort.push_back(joint_value.at(i).effort);
+    actual.positions.push_back(joint_value.at(i).position);
+    actual.velocities.push_back(joint_value.at(i).velocity);
+    actual.effort.push_back(joint_value.at(i).effort);
+    actual.accelerations.push_back(joint_value.at(i).acceleration);
   }
+
+  // Calculate error
+  for(uint8_t i = 0; i < follow_joint_trajectory_feedback_.desired.positions.size(); i ++)
+    error.positions.push_back(follow_joint_trajectory_feedback_.desired.positions.at(i) -
+                              joint_value.at(i).position);
+  for(uint8_t i = 0; i < follow_joint_trajectory_feedback_.desired.velocities.size(); i ++)
+    error.velocities.push_back(follow_joint_trajectory_feedback_.desired.velocities.at(i) -
+                               joint_value.at(i).velocity);
+  for(uint8_t i = 0; i < follow_joint_trajectory_feedback_.desired.accelerations.size(); i ++)
+    error.accelerations.push_back(follow_joint_trajectory_feedback_.desired.accelerations.at(i) -
+                                  joint_value.at(i).acceleration);
+  // for(uint8_t i = 0; i < follow_joint_trajectory_feedback_.desired.effort.size(); i ++)
+  //   error.effort.push_back(follow_joint_trajectory_feedback_.desired.effort.at(i) -
+  //                          joint_value.at(i).effort);
+
+  // Update Feedback message
+  follow_joint_trajectory_feedback_.joint_names = joint_state_msg.name;
+  follow_joint_trajectory_feedback_.actual = actual;
+  follow_joint_trajectory_feedback_.error = error;
+
+  // Prepare JointState message
+  joint_state_msg.header.stamp = stamp;
+  joint_state_msg.position = actual.positions;
+  joint_state_msg.velocity = actual.velocities;
+  joint_state_msg.effort = actual.effort;
 
   for(uint8_t i = 0; i < tool_name.size(); i ++)
   {
-    msg.name.push_back(tool_name.at(i));
+    joint_state_msg.name.push_back(tool_name.at(i));
 
-    msg.position.push_back(tool_value.at(i).position);
-    msg.velocity.push_back(0.0f);
-    msg.effort.push_back(0.0f);
+    joint_state_msg.position.push_back(tool_value.at(i).position);
+    joint_state_msg.velocity.push_back(0.0f);
+    joint_state_msg.effort.push_back(0.0f);
   }
-  open_manipulator_joint_states_pub_.publish(msg);
+
+  // Prepare JointTrajectoryControllerState message
+  controller_state_msg.header.stamp = stamp;
+  controller_state_msg.joint_names = follow_joint_trajectory_feedback_.joint_names;
+  controller_state_msg.desired = follow_joint_trajectory_feedback_.desired;
+  controller_state_msg.actual = follow_joint_trajectory_feedback_.actual;
+  controller_state_msg.error = follow_joint_trajectory_feedback_.error;
+
+  // Publish messages
+  open_manipulator_joint_states_pub_.publish(joint_state_msg);
+  open_manipulator_controller_state_pub_.publish(controller_state_msg);
 }
 
 void OpenManipulatorController::publishGazeboCommand()
@@ -575,7 +614,7 @@ void OpenManipulatorController::publishGazeboCommand()
 
 void OpenManipulatorController::publishCallback(const ros::TimerEvent&)
 {
-  if (using_platform_ == true)  publishJointStates();
+  if (using_platform_ == true)  publishStates();
   else  publishGazeboCommand();
 
   publishOpenManipulatorStates();
@@ -607,29 +646,6 @@ void OpenManipulatorController::moveitPublishGoal(uint32_t step_cnt, double* tim
 
 void OpenManipulatorController::moveitPublishFeedback()
 {
-  auto joint_value = open_manipulator_.getAllActiveJointValue();
-  trajectory_msgs::JointTrajectoryPoint actual;
-  trajectory_msgs::JointTrajectoryPoint error;
-
-  for(uint8_t i = 0; i < follow_joint_trajectory_feedback_.joint_names.size(); i ++)
-  {
-    actual.positions.push_back(joint_value.at(i).position);
-    actual.velocities.push_back(joint_value.at(i).velocity);
-    actual.effort.push_back(joint_value.at(i).effort);
-    actual.accelerations.push_back(joint_value.at(i).acceleration);
-
-    error.positions.push_back(follow_joint_trajectory_feedback_.desired.positions.at(i) -
-                                 joint_value.at(i).position);
-    error.velocities.push_back(follow_joint_trajectory_feedback_.desired.velocities.at(i) -
-                                 joint_value.at(i).velocity);
-    error.accelerations.push_back(follow_joint_trajectory_feedback_.desired.accelerations.at(i) -
-                                 joint_value.at(i).acceleration);
-    // error.effort.push_back(follow_joint_trajectory_feedback_.desired.effort.at(i) -
-    //                              joint_value.at(i).effort);
-  }
-  follow_joint_trajectory_feedback_.actual = actual;
-  follow_joint_trajectory_feedback_.error = error;
-
   follow_joint_trajectory_server_.publishFeedback(follow_joint_trajectory_feedback_);
 }
 

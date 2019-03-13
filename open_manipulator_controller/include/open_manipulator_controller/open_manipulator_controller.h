@@ -22,6 +22,7 @@
 #include <ros/ros.h>
 #include <actionlib/server/simple_action_server.h>
 #include <control_msgs/FollowJointTrajectoryAction.h>
+#include <control_msgs/JointTrajectoryControllerState.h>
 #include <sensor_msgs/JointState.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <std_msgs/Float64.h>
@@ -67,6 +68,7 @@ class OpenManipulatorController
   ros::Publisher open_manipulator_states_pub_;
   std::vector<ros::Publisher> open_manipulator_kinematics_pose_pub_;
   ros::Publisher open_manipulator_joint_states_pub_;
+  ros::Publisher open_manipulator_controller_state_pub_;
   std::vector<ros::Publisher> gazebo_goal_joint_position_pub_;
 
   // ROS Subscribers
@@ -178,7 +180,7 @@ class OpenManipulatorController
 
   void publishOpenManipulatorStates();
   void publishKinematicsPose();
-  void publishJointStates();
+  void publishStates();
   void publishGazeboCommand();
 
   bool calcPlannedPath(const std::string planning_group, open_manipulator_msgs::JointPosition msg);
