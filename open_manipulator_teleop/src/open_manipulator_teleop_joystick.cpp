@@ -63,6 +63,8 @@ void OpenManipulatorTeleop::jointStatesCallback(const sensor_msgs::JointState::C
     else if(!msg->name.at(i).compare("joint2"))  temp_angle.at(1) = (msg->position.at(i));
     else if(!msg->name.at(i).compare("joint3"))  temp_angle.at(2) = (msg->position.at(i));
     else if(!msg->name.at(i).compare("joint4"))  temp_angle.at(3) = (msg->position.at(i));
+    else if(!msg->name.at(i).compare("joint5"))  temp_angle.at(4) = (msg->position.at(i));
+    else if(!msg->name.at(i).compare("joint6"))  temp_angle.at(5) = (msg->position.at(i));
   }
   present_joint_angle_ = temp_angle;
 
@@ -146,7 +148,7 @@ bool OpenManipulatorTeleop::setTaskSpacePathFromPresentPositionOnly(std::vector<
 void OpenManipulatorTeleop::setGoal(const char* str)
 {
   std::vector<double> goalPose;  goalPose.resize(3, 0.0);
-  std::vector<double> goalJoint; goalJoint.resize(4, 0.0);
+  std::vector<double> goalJoint; goalJoint.resize(NUM_OF_JOINT, 0.0);
 
   if(str == "x+")
   {
@@ -211,7 +213,9 @@ void OpenManipulatorTeleop::setGoal(const char* str)
     joint_name.push_back("joint1"); joint_angle.push_back(0.0);
     joint_name.push_back("joint2"); joint_angle.push_back(-1.18);
     joint_name.push_back("joint3"); joint_angle.push_back(0.620);
-    joint_name.push_back("joint4"); joint_angle.push_back(0.568);
+    joint_name.push_back("joint4"); joint_angle.push_back(0.0);
+    joint_name.push_back("joint5"); joint_angle.push_back(0.568);
+    joint_name.push_back("joint6"); joint_angle.push_back(0.0);
     setJointSpacePath(joint_name, joint_angle, path_time);
   }
   else if(str == "init")
@@ -225,6 +229,8 @@ void OpenManipulatorTeleop::setGoal(const char* str)
     joint_name.push_back("joint2"); joint_angle.push_back(0.0);
     joint_name.push_back("joint3"); joint_angle.push_back(0.0);
     joint_name.push_back("joint4"); joint_angle.push_back(0.0);
+    joint_name.push_back("joint5"); joint_angle.push_back(0.0);
+    joint_name.push_back("joint6"); joint_angle.push_back(0.0);
     setJointSpacePath(joint_name, joint_angle, path_time);
   }
 }

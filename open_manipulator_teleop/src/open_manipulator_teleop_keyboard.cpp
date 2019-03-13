@@ -63,6 +63,8 @@ void OpenManipulatorTeleop::jointStatesCallback(const sensor_msgs::JointState::C
     else if(!msg->name.at(i).compare("joint2"))  temp_angle.at(1) = (msg->position.at(i));
     else if(!msg->name.at(i).compare("joint3"))  temp_angle.at(2) = (msg->position.at(i));
     else if(!msg->name.at(i).compare("joint4"))  temp_angle.at(3) = (msg->position.at(i));
+    else if(!msg->name.at(i).compare("joint5"))  temp_angle.at(4) = (msg->position.at(i));
+    else if(!msg->name.at(i).compare("joint6"))  temp_angle.at(5) = (msg->position.at(i));
   }
   present_joint_angle_ = temp_angle;
 
@@ -156,16 +158,10 @@ void OpenManipulatorTeleop::printText()
   printf("z : increase z axis in task space\n");
   printf("x : decrease z axis in task space\n");
   printf("\n");
-  printf("y : increase joint 1 angle\n");
-  printf("h : decrease joint 1 angle\n");
-  printf("u : increase joint 2 angle\n");
-  printf("j : decrease joint 2 angle\n");
-  printf("i : increase joint 3 angle\n");
-  printf("k : decrease joint 3 angle\n");
-  printf("o : increase joint 4 angle\n");
-  printf("l : decrease joint 4 angle\n");
+  printf("t ~ p : increase joint 1~6 angle\n");
+  printf("g ~ ; : decrease joint 1~6 angle\n");
   printf("\n");
-  printf("g : gripper open\n");
+  printf("r : gripper open\n");
   printf("f : gripper close\n");
   printf("       \n");
   printf("1 : init pose\n");
@@ -174,11 +170,13 @@ void OpenManipulatorTeleop::printText()
   printf("q to quit\n");
   printf("---------------------------\n");
 
-  printf("Present Joint Angle J1: %.3lf J2: %.3lf J3: %.3lf J4: %.3lf\n",
+  printf("Present Joint Angle J1: %.3lf J2: %.3lf J3: %.3lf J4: %.3lf J5: %.3lf J6: %.3lf\n",
          getPresentJointAngle().at(0),
          getPresentJointAngle().at(1),
          getPresentJointAngle().at(2),
-         getPresentJointAngle().at(3));
+         getPresentJointAngle().at(3),
+         getPresentJointAngle().at(4),
+         getPresentJointAngle().at(5));
   printf("Present Kinematics Position X: %.3lf Y: %.3lf Z: %.3lf\n",
          getPresentKinematicsPose().at(0),
          getPresentKinematicsPose().at(1),
@@ -190,7 +188,7 @@ void OpenManipulatorTeleop::printText()
 void OpenManipulatorTeleop::setGoal(char ch)
 {
   std::vector<double> goalPose;  goalPose.resize(3, 0.0);
-  std::vector<double> goalJoint; goalJoint.resize(4, 0.0);
+  std::vector<double> goalJoint; goalJoint.resize(NUM_OF_JOINT, 0.0);
 
   if(ch == 'w' || ch == 'W')
   {
@@ -228,7 +226,7 @@ void OpenManipulatorTeleop::setGoal(char ch)
     goalPose.at(2) = -DELTA;
     setTaskSpacePathFromPresentPositionOnly(goalPose, PATH_TIME);
   }
-  else if(ch == 'y' || ch == 'Y')
+  else if(ch == 't' || ch == 'T')
   {
     printf("input : y \tincrease(++) joint 1 angle\n");
     std::vector<std::string> joint_name;
@@ -236,9 +234,72 @@ void OpenManipulatorTeleop::setGoal(char ch)
     joint_name.push_back("joint2");
     joint_name.push_back("joint3");
     joint_name.push_back("joint4");
+    joint_name.push_back("joint5");
+    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
-  else if(ch == 'h' || ch == 'H')
+  else if(ch == 'y' || ch == 'Y')
+  {
+    printf("input : y \tincrease(++) joint 2 angle\n");
+    std::vector<std::string> joint_name;
+    joint_name.push_back("joint1");
+    joint_name.push_back("joint2"); goalJoint.at(1) = JOINT_DELTA;
+    joint_name.push_back("joint3");
+    joint_name.push_back("joint4");
+    joint_name.push_back("joint5");
+    joint_name.push_back("joint6");
+    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
+  }
+  else if(ch == 'u' || ch == 'U')
+  {
+    printf("input : u \tincrease(++) joint 3 angle\n");
+    std::vector<std::string> joint_name;
+    joint_name.push_back("joint1");
+    joint_name.push_back("joint2");
+    joint_name.push_back("joint3"); goalJoint.at(2) = JOINT_DELTA;
+    joint_name.push_back("joint4");
+    joint_name.push_back("joint5");
+    joint_name.push_back("joint6");
+    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
+  }
+  else if(ch == 'i' || ch == 'I')
+  {
+    printf("input : i \tincrease(++) joint 4 angle\n");
+    std::vector<std::string> joint_name;
+    joint_name.push_back("joint1");
+    joint_name.push_back("joint2");
+    joint_name.push_back("joint3");
+    joint_name.push_back("joint4"); goalJoint.at(3) = JOINT_DELTA;
+    joint_name.push_back("joint5");
+    joint_name.push_back("joint6");
+    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
+  }
+  else if(ch == 'o' || ch == 'O')
+  {
+    printf("input : o \tincrease(++) joint 5 angle\n");
+    std::vector<std::string> joint_name;
+    joint_name.push_back("joint1");
+    joint_name.push_back("joint2");
+    joint_name.push_back("joint3");
+    joint_name.push_back("joint4");
+    joint_name.push_back("joint5"); goalJoint.at(4) = JOINT_DELTA;
+    joint_name.push_back("joint6");
+    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
+  }
+  else if(ch == 'p' || ch == 'P')
+  {
+    printf("input : o \tincrease(++) joint 6 angle\n");
+    std::vector<std::string> joint_name;
+    joint_name.push_back("joint1");
+    joint_name.push_back("joint2");
+    joint_name.push_back("joint3");
+    joint_name.push_back("joint4");
+    joint_name.push_back("joint5");
+    joint_name.push_back("joint6"); goalJoint.at(5) = JOINT_DELTA;
+    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
+  }
+
+  else if(ch == 'g' || ch == 'G')
   {
     printf("input : h \tdecrease(--) joint 1 angle\n");
     std::vector<std::string> joint_name;
@@ -246,20 +307,11 @@ void OpenManipulatorTeleop::setGoal(char ch)
     joint_name.push_back("joint2");
     joint_name.push_back("joint3");
     joint_name.push_back("joint4");
+    joint_name.push_back("joint5");
+    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
-
-  else if(ch == 'u' || ch == 'U')
-  {
-    printf("input : u \tincrease(++) joint 2 angle\n");
-    std::vector<std::string> joint_name;
-    joint_name.push_back("joint1");
-    joint_name.push_back("joint2"); goalJoint.at(1) = JOINT_DELTA;
-    joint_name.push_back("joint3");
-    joint_name.push_back("joint4");
-    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
-  }
-  else if(ch == 'j' || ch == 'J')
+  else if(ch == 'h' || ch == 'H')
   {
     printf("input : j \tdecrease(--) joint 2 angle\n");
     std::vector<std::string> joint_name;
@@ -267,20 +319,11 @@ void OpenManipulatorTeleop::setGoal(char ch)
     joint_name.push_back("joint2"); goalJoint.at(1) = -JOINT_DELTA;
     joint_name.push_back("joint3");
     joint_name.push_back("joint4");
+    joint_name.push_back("joint5");
+    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
-
-  else if(ch == 'i' || ch == 'I')
-  {
-    printf("input : i \tincrease(++) joint 3 angle\n");
-    std::vector<std::string> joint_name;
-    joint_name.push_back("joint1");
-    joint_name.push_back("joint2");
-    joint_name.push_back("joint3"); goalJoint.at(2) = JOINT_DELTA;
-    joint_name.push_back("joint4");
-    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
-  }
-  else if(ch == 'k' || ch == 'K')
+  else if(ch == 'j' || ch == 'J')
   {
     printf("input : k \tdecrease(--) joint 3 angle\n");
     std::vector<std::string> joint_name;
@@ -288,20 +331,11 @@ void OpenManipulatorTeleop::setGoal(char ch)
     joint_name.push_back("joint2");
     joint_name.push_back("joint3"); goalJoint.at(2) = -JOINT_DELTA;
     joint_name.push_back("joint4");
+    joint_name.push_back("joint5");
+    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
-
-  else if(ch == 'o' || ch == 'O')
-  {
-    printf("input : o \tincrease(++) joint 4 angle\n");
-    std::vector<std::string> joint_name;
-    joint_name.push_back("joint1");
-    joint_name.push_back("joint2");
-    joint_name.push_back("joint3");
-    joint_name.push_back("joint4"); goalJoint.at(3) = JOINT_DELTA;
-    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
-  }
-  else if(ch == 'l' || ch == 'L')
+  else if(ch == 'k' || ch == 'K')
   {
     printf("input : l \tdecrease(--) joint 4 angle\n");
     std::vector<std::string> joint_name;
@@ -309,10 +343,35 @@ void OpenManipulatorTeleop::setGoal(char ch)
     joint_name.push_back("joint2");
     joint_name.push_back("joint3");
     joint_name.push_back("joint4"); goalJoint.at(3) = -JOINT_DELTA;
+    joint_name.push_back("joint5");
+    joint_name.push_back("joint6");
+    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
+  }
+  else if(ch == 'l' || ch == 'L')
+  {
+    printf("input : l \tdecrease(--) joint 5 angle\n");
+    std::vector<std::string> joint_name;
+    joint_name.push_back("joint1");
+    joint_name.push_back("joint2");
+    joint_name.push_back("joint3");
+    joint_name.push_back("joint4");
+    joint_name.push_back("joint5"); goalJoint.at(4) = -JOINT_DELTA;
+    joint_name.push_back("joint6");
+    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
+  }  else if(ch == ';')
+  {
+    printf("input : l \tdecrease(--) joint 6 angle\n");
+    std::vector<std::string> joint_name;
+    joint_name.push_back("joint1");
+    joint_name.push_back("joint2");
+    joint_name.push_back("joint3");
+    joint_name.push_back("joint4");
+    joint_name.push_back("joint5");
+    joint_name.push_back("joint6"); goalJoint.at(5) = -JOINT_DELTA;
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
 
-  else if(ch == 'g' || ch == 'G')
+  else if(ch == 'r' || ch == 'R')
   {
     printf("input : g \topen gripper\n");
     std::vector<double> joint_angle;
@@ -338,7 +397,9 @@ void OpenManipulatorTeleop::setGoal(char ch)
     joint_name.push_back("joint1"); joint_angle.push_back(0.0);
     joint_name.push_back("joint2"); joint_angle.push_back(-1.18);
     joint_name.push_back("joint3"); joint_angle.push_back(0.620);
-    joint_name.push_back("joint4"); joint_angle.push_back(0.568);
+    joint_name.push_back("joint4"); joint_angle.push_back(0.0);
+    joint_name.push_back("joint5"); joint_angle.push_back(0.568);
+    joint_name.push_back("joint6"); joint_angle.push_back(0.0);
     setJointSpacePath(joint_name, joint_angle, path_time);
   }
   else if(ch == '1')
@@ -352,6 +413,8 @@ void OpenManipulatorTeleop::setGoal(char ch)
     joint_name.push_back("joint2"); joint_angle.push_back(0.0);
     joint_name.push_back("joint3"); joint_angle.push_back(0.0);
     joint_name.push_back("joint4"); joint_angle.push_back(0.0);
+    joint_name.push_back("joint5"); joint_angle.push_back(0.0);
+    joint_name.push_back("joint6"); joint_angle.push_back(0.0);
     setJointSpacePath(joint_name, joint_angle, path_time);
   }
 }

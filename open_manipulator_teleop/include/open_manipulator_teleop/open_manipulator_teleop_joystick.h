@@ -9,7 +9,7 @@
 #include "open_manipulator_msgs/SetJointPosition.h"
 #include "open_manipulator_msgs/SetKinematicsPose.h"
 
-#define NUM_OF_JOINT 4
+#define NUM_OF_JOINT 6
 #define DELTA 0.01
 #define JOINT_DELTA 0.05
 #define PATH_TIME 0.5
