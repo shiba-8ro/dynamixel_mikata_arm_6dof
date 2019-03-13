@@ -169,10 +169,10 @@ void MainWindow::on_btn_home_pose_clicked(void)
   std::vector<double> joint_angle;
   double path_time = 2.0;
   joint_name.push_back("joint1"); joint_angle.push_back(0.0);
-  joint_name.push_back("joint2"); joint_angle.push_back(1.18);
-  joint_name.push_back("joint3"); joint_angle.push_back(-0.620);
+  joint_name.push_back("joint2"); joint_angle.push_back(-1.18);
+  joint_name.push_back("joint3"); joint_angle.push_back(0.620);
   joint_name.push_back("joint4"); joint_angle.push_back(0.0);
-  joint_name.push_back("joint5"); joint_angle.push_back(-0.568);
+  joint_name.push_back("joint5"); joint_angle.push_back(0.568);
   joint_name.push_back("joint6"); joint_angle.push_back(0.0);
   if(!qnode.setJointSpacePath(joint_name, joint_angle, path_time))
   {
