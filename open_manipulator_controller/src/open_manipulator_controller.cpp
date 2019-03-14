@@ -192,23 +192,32 @@ void OpenManipulatorController::goalFollowJointTrajectoryCallback(const control_
   {
     ROS_DEBUG("goalFollowJointTrajectoryCallback");
 
-    // Check joint_names
-    if(goal->trajectory.joint_names.size() != follow_joint_trajectory_feedback_.joint_names.size())
+    if (!follow_joint_trajectory_feedback_.joint_names.size())
     {
-      log::error("Sizes mismatch at goalFollowJointTrajectoryCallback!");
-      ROS_ERROR("Aborting Trajectory Execution!");
-      follow_joint_trajectory_server_.setAborted();
-      return;
+      // ControllerState is not published
+      // e.g. during gazebo simulation
+      follow_joint_trajectory_feedback_.joint_names = goal->trajectory.joint_names;
     }
-    for(uint8_t i = 0; i < goal->trajectory.joint_names.size(); i ++)
+    else
     {
-      if(goal->trajectory.joint_names.at(i) != follow_joint_trajectory_feedback_.joint_names.at(i))
-      {
-        log::error("Joint names mismatch at goalFollowJointTrajectoryCallback!");
-        ROS_ERROR("Aborting Trajectory Execution!");
-        follow_joint_trajectory_server_.setAborted();
-        return;
-      }
+      // Check joint_names
+      if(goal->trajectory.joint_names.size() != follow_joint_trajectory_feedback_.joint_names.size())
+        {
+          log::error("Sizes mismatch at goalFollowJointTrajectoryCallback!");
+          ROS_ERROR("Aborting Trajectory Execution!");
+          follow_joint_trajectory_server_.setAborted();
+          return;
+        }
+      for(uint8_t i = 0; i < goal->trajectory.joint_names.size(); i ++)
+        {
+          if(goal->trajectory.joint_names.at(i) != follow_joint_trajectory_feedback_.joint_names.at(i))
+            {
+              log::error("Joint names mismatch at goalFollowJointTrajectoryCallback!");
+              ROS_ERROR("Aborting Trajectory Execution!");
+              follow_joint_trajectory_server_.setAborted();
+              return;
+            }
+        }
     }
 
     joint_trajectory_ = goal->trajectory;
