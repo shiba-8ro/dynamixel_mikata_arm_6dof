@@ -1,7 +1,7 @@
-# OpenManipulator featuring MikataArm
-![mikata_arm](https://user-images.githubusercontent.com/20625381/49922788-0cccef80-fef5-11e8-8fa9-c05db0a9ceb6.png)
+# OpenManipulator featuring 6DOF MikataArm
+![mikata_arm_6dof](https://user-images.githubusercontent.com/20625381/54344771-fa458c00-4684-11e9-9a17-52ad49b37959.png)
 
-**FOR THE 6DOF MODEL CHECK THE [dynamixel_6dof_mikata_arm branch](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/tree/dynamixel_6dof_mikata_arm)**
+**FOR THE 4DOF MODEL CHECK THE [dynamixel_mikata_arm branch](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/tree/dynamixel_mikata_arm)**
 
 ## Quick Start
 ```bash
@@ -16,8 +16,8 @@ git clone https://github.com/ROBOTIS-GIT/robotis_manipulator.git
 git clone https://github.com/ROBOTIS-GIT/open_manipulator_msgs.git
 
 # Clone open manipulator packages
-git clone https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator.git
-git clone https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator_simulations.git
+git clone https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator.git -b dynamixel_6dof_mikata_arm
+git clone https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator_simulations.git -b dynamixel_6dof_mikata_arm
 
 # Build and source
 cd ~/catkin_ws && catkin_make
