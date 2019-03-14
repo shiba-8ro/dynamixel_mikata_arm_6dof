@@ -1,10 +1,33 @@
 # OpenManipulator featuring MikataArm
 ![mikata_arm](https://user-images.githubusercontent.com/20625381/49922788-0cccef80-fef5-11e8-8fa9-c05db0a9ceb6.png)
 
-## ROS Packages for OpenManipulator
-|Version|Kinetic + Ubuntu Xenial|Melodic + Ubuntu Bionic|
-|:---:|:---:|:---:|
-|[![GitHub version](https://badge.fury.io/gh/ROBOTIS-GIT%2Fopen_manipulator.svg)](https://badge.fury.io/gh/ROBOTIS-GIT%2Fopen_manipulator)|[![Build Status](https://travis-ci.org/ROBOTIS-GIT/open_manipulator.svg?branch=kinetic-devel)](https://travis-ci.org/ROBOTIS-GIT/open_manipulator)|[![Build Status](https://travis-ci.org/ROBOTIS-GIT/open_manipulator.svg?branch=melodic-devel)](https://travis-ci.org/ROBOTIS-GIT/open_manipulator)|
+**FOR THE 6DOF MODEL CHECK THE [dynamixel_6dof_mikata_arm branch](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/tree/dynamixel_6dof_mikata_arm)**
+
+## Quick Start
+```bash
+mkdir ~/catkin_ws/src/ -p
+cd ~/catkin_ws/src/
+
+# Clone dependency packages
+git clone https://github.com/ROBOTIS-GIT/DynamixelSDK.git
+git clone https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
+git clone https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
+git clone https://github.com/ROBOTIS-GIT/robotis_manipulator.git
+git clone https://github.com/ROBOTIS-GIT/open_manipulator_msgs.git
+
+# Clone open manipulator packages
+git clone https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator.git
+git clone https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator_simulations.git
+
+# Build and source
+cd ~/catkin_ws && catkin_make
+source ~/catkin_ws/devel/setup.bash
+```
+
+The following runs a sample demo using Gazebo and MoveIt interface:
+```
+roslaunch open_manipulator_controller open_manipulator_controller.launch use_gazebo:=true use_moveit:=true
+```
 
 ## ROBOTIS e-Manual for OpenManipulator
 - [ROBOTIS e-Manual for OpenManipulator](http://emanual.robotis.com/docs/en/platform/openmanipulator/)
