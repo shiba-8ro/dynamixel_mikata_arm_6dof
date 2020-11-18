@@ -1,11 +1,9 @@
-# OpenManipulator
-<img src="https://github.com/ROBOTIS-GIT/emanual/blob/master/assets/images/platform/openmanipulator_x/OpenManipulator.png">
-<img src="https://github.com/ROBOTIS-GIT/emanual/blob/master/assets/images/platform/openmanipulator_x/OpenManipulator_Chain_Capture.png" width="500">
+# OpenManipulator-max
+![open_manipulator_max](https://user-images.githubusercontent.com/5852451/98150238-afd7e980-1f11-11eb-97f7-b39053111f49.png)
 
-## ROS Packages for OpenManipulator
-|Version|Kinetic + Ubuntu Xenial|Melodic + Ubuntu Bionic|
-|:---:|:---:|:---:|
-|[![GitHub version](https://badge.fury.io/gh/ROBOTIS-GIT%2Fopen_manipulator.svg)](https://badge.fury.io/gh/ROBOTIS-GIT%2Fopen_manipulator)|[![Build Status](https://travis-ci.org/ROBOTIS-GIT/open_manipulator.svg?branch=kinetic-devel)](https://travis-ci.org/ROBOTIS-GIT/open_manipulator)|[![Build Status](https://travis-ci.org/ROBOTIS-GIT/open_manipulator.svg?branch=melodic-devel)](https://travis-ci.org/ROBOTIS-GIT/open_manipulator)|
+
+## CADデータと部品表
+- [open_manipulator_max_Hardware](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/tree/open_manipulator_max/open_manipulator_max_Hardware)
 
 ## ROBOTIS e-Manual for OpenManipulator
 - [ROBOTIS e-Manual for OpenManipulator](http://emanual.robotis.com/docs/en/platform/openmanipulator/)
@@ -23,7 +21,7 @@
 - [robotis_manipulator](https://github.com/ROBOTIS-GIT/robotis_manipulator)
 - [open_manipulator](https://github.com/ROBOTIS-GIT/open_manipulator)
 - [open_manipulator_msgs](https://github.com/ROBOTIS-GIT/open_manipulator_msgs)
-- [open_manipulator_simulations](https://github.com/ROBOTIS-GIT/open_manipulator_simulations)
+- [open_manipulator_simulations](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator_simulations) (ROBOTIS_JAPAN_GIT fork)
 - [open_manipulator_perceptions](https://github.com/ROBOTIS-GIT/open_manipulator_perceptions)
 - [open_manipulator_processing](https://github.com/ROBOTIS-GIT/open_manipulator_processing)
 - [open_manipulator_friends](https://github.com/ROBOTIS-GIT/open_manipulator_friends)
