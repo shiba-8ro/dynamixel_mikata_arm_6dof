@@ -7,7 +7,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/om_max_link1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="grey"/>
     </visual>
@@ -15,7 +15,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link1.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/om_max_link1.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 
@@ -32,7 +32,7 @@
   <joint name="joint1" type="revolute">
     <parent link="link1"/>
     <child link="link2"/>
-    <origin xyz="0.012 0.0 0.017" rpy="0 0 0"/>
+    <origin xyz="0.0155 0.0 0.0335" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
     <limit velocity="4.8" effort="1" lower="${-pi*0.9}" upper="${pi*0.9}" />
   </joint>
@@ -42,7 +42,7 @@
     <visual>
       <origin xyz="0 0 0.019" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/om_max_link2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="grey"/>
     </visual>
@@ -50,7 +50,7 @@
     <collision>
       <origin xyz="0 0 0.019" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link2.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/om_max_link2.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 
@@ -67,7 +67,7 @@
   <joint name="joint2" type="revolute">
     <parent link="link2"/>
     <child link="link3"/>
-    <origin xyz="0.0 0.0 0.0595" rpy="0 0 0"/>
+    <origin xyz="0.0 0.0 0.068" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit velocity="4.8" effort="1" lower="${-pi*0.57}" upper="${pi*0.5}" />
   </joint>
@@ -77,7 +77,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/om_max_link3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="grey"/>
     </visual>
@@ -85,7 +85,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link3.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/om_max_link3.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 
@@ -112,7 +112,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link4.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/om_max_link4.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="grey"/>
     </visual>
@@ -120,7 +120,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://open_manipulator_description/meshes/chain_link4.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://open_manipulator_description/meshes/om_max_link4.stl" scale="0.001 0.001 0.001"/>
       </geometry>
     </collision>
 
@@ -266,6 +266,7 @@
   </link>
 
   <!-- Realsense Camera Joint Position -->
+  <!--
   <joint name="camera_joint" type="fixed">
     <axis xyz="0 1 0" />
     <origin xyz="0.070 0.032 0.052" rpy="0 0 0"/> 
@@ -274,5 +275,5 @@
   </joint>
 
   <link name="camera_link"/>
-  
+-->
 </robot>
