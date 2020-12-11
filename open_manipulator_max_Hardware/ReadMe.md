@@ -14,6 +14,7 @@
 ---
 ## Parts List <br>
 <br>
+
 | #   | SKU          | Model / Item name      | Quantity | Manufacture | Note                                                          | 
 | --- | ------------ | ---------------------- | -------- | ----------- | ------------------------------------------------------------- | 
 | 1   | 902-0137-000 | Dynamixel XM540-W270-T | 4        | ROBOTIS     | Actuator ID11,ID12(Double),ID13.                              | 
