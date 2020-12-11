@@ -13,7 +13,6 @@
 
 ---
 ## Parts List <br>
-※作成中<br>
 <br>
 | #   | SKU          | Model / Item name      | Quantity | Manufacture | Note                                                          | 
 | --- | ------------ | ---------------------- | -------- | ----------- | ------------------------------------------------------------- | 
@@ -27,12 +26,11 @@
 | 8   | N/A          | AXK1106                 | 1        | NTN      | AXK形（スラスト保持器付針状ころ） / 内径Φ30 外径Φ47 t2.0              | 
 | 9   | N/A          | AS1106                 | 1        | NTN      | AS形軌道輪（ワッシャ） / 内径Φ30 外径Φ47 t1.0             | 
 | 10  | N/A          | CIMR30-45-0.1 | 1       | Misumi      | シムt0.1 / スラスト軸受調整用、使用しない場合もある  |
-| 11  | JP3-00XX-000 | GND_BASE               | 1        | ROBOTIS Japan      | ベースプレート                              | 
-| 12  | JP3-00XX-000 | YAW_PLATE              | 1        | ROBOTIS Japan      | ショルダーYaw軸プレート / XM540ダブルサーボ仕様  | 
-| 13  | JP3-00XX-000 | PITCH_ARM              | 2        | ROBOTIS Japan      | 上腕Pitch軸可動アーム / XM540ダブルサーボ仕様 | 
-| 14  | JP3-00XX-000 | FJ13-ALF5              | 4        | ROBOTIS Japan      | Dynamixel及びROBOTIS製パーツとアルミフレーム ５シリーズを連結するための部品 |
+| 11  | JP3-0058-000 | FJ13-BASE_OM-MAX             | 1        | ROBOTIS Japan      | ベースプレート                              | 
+| 12  | JP3-0059-000 | FJ13-YAW_PLATE_OM-MAX       | 1        | ROBOTIS Japan      | ショルダーYaw軸プレート / XM540ダブルサーボ仕様  | 
+| 13  | JP3-0060-000 | FJ13-PITCH_ARM_OM-MAX       | 2        | ROBOTIS Japan      | 上腕Pitch軸可動アーム / XM540ダブルサーボ仕様 | 
+| 14  | JP3-0061-000 | FJ13-ALF5_OM-MAX              | 4        | ROBOTIS Japan      | Dynamixel及びROBOTIS製パーツとアルミフレーム ５シリーズを連結するための部品 |
 | 15  | N/A          | 六角穴付き平頭小ねじ M2.5x5 | Over 58       | 浅井製作所      | 小径低頭ネジ / 複数箇所のパーツ間締結 |
 | 16  | N/A          | 六角穴付きボルト M2.5x20 | 4       | 汎用品      | XM540とベースプレートを締結 |
 | 17  | N/A          | 六角穴付止めねじ とがり先 M3x5 | 16       | 汎用品      | 六角穴付止めねじ とがり先 / FJ13-ALF5とアルミフレーム ５シリーズを締結  |
 
-Editing
