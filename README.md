@@ -3,7 +3,7 @@
 
 
 ## CADデータと部品表
-- [open_manipulator_max_Hardware](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/tree/open_manipulator_max/open_manipulator_max_Hardware)
+- [open_manipulator_x1600_Hardware](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/tree/open_manipulator_max/open_manipulator_max_Hardware)
 
 ## ROBOTIS e-Manual for OpenManipulator
 - [ROBOTIS e-Manual for OpenManipulator](http://emanual.robotis.com/docs/en/platform/openmanipulator/)
