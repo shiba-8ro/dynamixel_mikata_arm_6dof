@@ -1,5 +1,5 @@
-# OpenManipulator-max
-![open_manipulator_max](https://user-images.githubusercontent.com/5852451/101907287-aff89280-3bfd-11eb-8bd6-2cf1958332e2.JPG)
+# OpenManipulator-x1600
+![open_manipulator_x1600](https://user-images.githubusercontent.com/5852451/101907287-aff89280-3bfd-11eb-8bd6-2cf1958332e2.JPG)
 
 
 ## CADデータと部品表
