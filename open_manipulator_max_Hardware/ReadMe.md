@@ -1,8 +1,8 @@
-## Contents of [om-max_assembled＿STEP_.zip](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/blob/open_manipulator_max/open_manipulator_max_Hardware/om-max_assembled_STEP_.zip) <br>
+## Contents of [om-x1600_assembled＿STEP_.zip](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/blob/open_manipulator_max/open_manipulator_max_Hardware/om-max_assembled_STEP_.zip) <br>
 ロボットアーム全体のアセンブル済みデータです(STEP形式)
 - om-max_assembled.stp <br>
 
-## Contents of [om-max_link1_to_link5＿STEP_.zip](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/blob/open_manipulator_max/open_manipulator_max_Hardware/om-max_link1_to_link5_STEP_.zip) <br>
+## Contents of [om-x1600_link1_to_link5＿STEP_.zip](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/blob/open_manipulator_max/open_manipulator_max_Hardware/om-max_link1_to_link5_STEP_.zip) <br>
 ロボットアームの関節(リンク)毎のデータです(STEP形式)、グリッパーの可動部は省略されています。
 - om-max_link1.stp <br>
 - om-max_link2.stp <br>
