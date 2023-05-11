@@ -1,4 +1,4 @@
-## Contents of [om-max6_assembled_STEP_.zip](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/blob/open_manipulator_max/open_manipulator_max6_Hardware/om-max6_assembled_STEP_.zip) <br>
+## Contents of [om-max6_assembled_step.zip](https://github.com/ROBOTIS-JAPAN-GIT/open_manipulator/blob/open_manipulator_max/open_manipulator_max6_Hardware/om-max6_assembled_step.zip) <br>
 ロボットアーム全体のアセンブル済みデータです(STEP形式)
 - om-max6_assembled.stp <br>
 
